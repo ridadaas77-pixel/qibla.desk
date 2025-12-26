@@ -29,7 +29,8 @@ const countdownEl = document.getElementById("countdown");
 
 let cooldown = false;
 
-btn.addEventListener("click", async () => {
+// Function to fetch and display a random ayah
+async function generateAyah() {
   if (cooldown) return;
   cooldown = true;
   startCountdown(5);
@@ -51,13 +52,16 @@ btn.addEventListener("click", async () => {
     arabicEl.textContent = arabicData.data.text;
     metaEl.textContent = `${arabicData.data.surah.englishName} — Ayah ${arabicData.data.numberInSurah}`;
     englishEl.textContent = englishData.data.text;
-    
+
   } catch (e) {
     arabicEl.textContent = "Failed to load ayah.";
     metaEl.textContent = "";
     englishEl.textContent = "";
   }
-});
+}
+
+// Button click triggers a new ayah
+btn.addEventListener("click", generateAyah);
 
 // -----------------------------
 // Countdown Timer
@@ -77,3 +81,8 @@ function startCountdown(seconds) {
     }
   }, 1000);
 }
+
+// -----------------------------
+// Preload first ayah on page load
+// -----------------------------
+window.addEventListener("DOMContentLoaded", generateAyah);
