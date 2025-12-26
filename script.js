@@ -14,14 +14,14 @@ fetch("https://api.aladhan.com/v1/timingsByCity?city=Duisburg&country=Germany&me
 
 // Random Quran Verse
 function loadVerse() {
-  const id = Math.floor(Math.random() * 6236) + 1;
-
-  fetch(`https://api.quran.com/api/v4/verses/by_id/${id}`)
+  fetch("https://api.alquran.cloud/v1/ayah/random")
     .then(res => res.json())
     .then(data => {
       document.getElementById("verse").textContent =
-        data.verse.text_uthmani;
+        data.data.text;
+    })
+    .catch(() => {
+      document.getElementById("verse").textContent =
+        "Failed to load verse.";
     });
 }
-
-loadVerse();
