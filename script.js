@@ -6,10 +6,9 @@ fetch("https://api.aladhan.com/v1/timingsByCity?city=Duisburg&country=Germany&me
   .then(data => {
     const times = data.data.timings;
     const list = document.getElementById("times");
-
     ["Fajr","Dhuhr","Asr","Maghrib","Isha"].forEach(prayer => {
       const li = document.createElement("li");
-      li.textContent = `${prayer}: ${times[prayer]}`;
+      li.innerHTML = `<span>${prayer}</span><span>${times[prayer]}</span>`;
       list.appendChild(li);
     });
   })
@@ -32,31 +31,38 @@ let cooldown = false;
 // Function to fetch and display a random ayah
 async function generateAyah() {
   if (cooldown) return;
+  
   cooldown = true;
+  btn.disabled = true;
   startCountdown(5);
-
+  
+  // Show loading state
+  arabicEl.textContent = "Loading...";
+  metaEl.textContent = "";
+  englishEl.textContent = "";
+  
   try {
-    // Random ayah number
-    const randomRes = await fetch("https://api.alquran.cloud/v1/ayah/random");
-    const randomData = await randomRes.json();
-    const ayahNumber = randomData.data.number;
-
+    // Random ayah number (1-6236 total ayahs in Quran)
+    const ayahNumber = Math.floor(Math.random() * 6236) + 1;
+    
     // Fetch Arabic
     const arabicRes = await fetch(`https://api.alquran.cloud/v1/ayah/${ayahNumber}/ar.alafasy`);
     const arabicData = await arabicRes.json();
-
+    
     // Fetch English translation (Asad)
     const englishRes = await fetch(`https://api.alquran.cloud/v1/ayah/${ayahNumber}/en.asad`);
     const englishData = await englishRes.json();
-
+    
     arabicEl.textContent = arabicData.data.text;
+    arabicEl.style.direction = "rtl"; // Right-to-left for Arabic
     metaEl.textContent = `${arabicData.data.surah.englishName} — Ayah ${arabicData.data.numberInSurah}`;
     englishEl.textContent = englishData.data.text;
-
+    
   } catch (e) {
-    arabicEl.textContent = "Failed to load ayah.";
+    arabicEl.textContent = "Failed to load ayah. Please try again.";
     metaEl.textContent = "";
     englishEl.textContent = "";
+    console.error("Error fetching ayah:", e);
   }
 }
 
@@ -69,15 +75,16 @@ btn.addEventListener("click", generateAyah);
 function startCountdown(seconds) {
   let timeLeft = seconds;
   countdownEl.textContent = `Next verse in ${timeLeft}s`;
-
+  
   const interval = setInterval(() => {
     timeLeft--;
-    countdownEl.textContent = `Next verse in ${timeLeft}s`;
-
-    if (timeLeft <= 0) {
+    if (timeLeft > 0) {
+      countdownEl.textContent = `Next verse in ${timeLeft}s`;
+    } else {
       clearInterval(interval);
-      countdownEl.textContent = "";
+      countdownEl.textContent = "Ready!";
       cooldown = false;
+      btn.disabled = false;
     }
   }, 1000);
 }
