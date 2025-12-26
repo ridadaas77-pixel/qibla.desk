@@ -27,3 +27,16 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+}
