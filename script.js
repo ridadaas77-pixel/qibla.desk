@@ -19,7 +19,7 @@ fetch("https://api.aladhan.com/v1/timingsByCity?city=Duisburg&country=Germany&me
   });
 
 // -----------------------------
-// Random Quran Verse Generator
+// Random Quran Verse Generator (Arabic + English)
 // -----------------------------
 const arabicEl = document.getElementById("arabic");
 const metaEl = document.getElementById("meta");
@@ -35,17 +35,23 @@ btn.addEventListener("click", async () => {
   startCountdown(5);
 
   try {
-    // Fetch random ayah from the full Qur’an with English translation (Sahih)
-    const res = await fetch("https://api.alquran.cloud/v1/ayah/random/en.asad");
-    const data = await res.json();
-    const ayah = data.data;
+    // Random ayah number
+    const randomRes = await fetch("https://api.alquran.cloud/v1/ayah/random");
+    const randomData = await randomRes.json();
+    const ayahNumber = randomData.data.number;
 
-    arabicEl.textContent = ayah.text; // Arabic text
-    metaEl.textContent = `${ayah.surah.englishName} — Ayah ${ayah.numberInSurah}`;
+    // Fetch Arabic
+    const arabicRes = await fetch(`https://api.alquran.cloud/v1/ayah/${ayahNumber}/ar.alafasy`);
+    const arabicData = await arabicRes.json();
+
+    // Fetch English translation (Asad)
+    const englishRes = await fetch(`https://api.alquran.cloud/v1/ayah/${ayahNumber}/en.asad`);
+    const englishData = await englishRes.json();
+
+    arabicEl.textContent = arabicData.data.text;
+    metaEl.textContent = `${arabicData.data.surah.englishName} — Ayah ${arabicData.data.numberInSurah}`;
+    englishEl.textContent = englishData.data.text;
     
-    // English translation from API (Sahih / Asad version)
-    // If you want another translation, replace 'en.asad' in the URL with a supported version
-    englishEl.textContent = ayah.text; // Arabic is same as text; translation handled by endpoint
   } catch (e) {
     arabicEl.textContent = "Failed to load ayah.";
     metaEl.textContent = "";
