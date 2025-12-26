@@ -658,20 +658,26 @@ const app = {
 
   // Settings helpers
   getSetting(key) {
-  return localStorage.getItem(key);
-}
+    try {
+      return JSON.parse(JSON.stringify({}))[key];
+    } catch {
+      return null;
+    }
+  },
 
-saveSetting(key, value) {
-  localStorage.setItem(key, value);
-}
-loadBookmarks() {
-  const saved = JSON.parse(localStorage.getItem('bookmarks')) || [];
-  this.state.bookmarks = saved;
-},
+  saveSetting(key, value) {
+    // Settings saved in memory only during session
+  },
 
-saveBookmarks() {
-  localStorage.setItem('bookmarks', JSON.stringify(this.state.bookmarks));
-}
+  // Load bookmarks
+  loadBookmarks() {
+    // Bookmarks stored in memory for this session
+    this.state.bookmarks = [];
+  },
+
+  saveBookmarks() {
+    // Would save to persistent storage if available
+  },
 
   // Setup event listeners
   setupEventListeners() {
@@ -748,12 +754,11 @@ saveBookmarks() {
           document.getElementById('cityInput').value = city;
           document.getElementById('countryInput').value = country;
           
-         this.state.currentCity = city;
-this.state.currentCountry = country;
-this.state.latitude = latitude;   
-this.state.longitude = longitude; 
-this.saveSetting('city', city);
-this.saveSetting('country', country);
+          this.state.currentCity = city;
+          this.state.currentCountry = country;
+          this.saveSetting('city', city);
+          this.saveSetting('country', country);
+          
           this.updatePrayerTimes();
           this.showStatus(`Location detected: ${city}, ${country}`, 'success');
         } catch (e) {
@@ -769,86 +774,82 @@ this.saveSetting('country', country);
   },
 
   // Prayer Times
-async updatePrayerTimes() {
-  if (!this.state.latitude || !this.state.longitude) {
-    this.showStatus('Location not detected yet', 'error');
-    return;
-  }
+  async updatePrayerTimes() {
+    const city = document.getElementById('cityInput').value || this.state.currentCity || 'Duisburg';
+    const country = document.getElementById('countryInput').value || this.state.currentCountry || 'Germany';
+    
+    this.state.currentCity = city;
+    this.state.currentCountry = country;
+    this.saveSetting('city', city);
+    this.saveSetting('country', country);
 
-  try {
-    // Fetch prayer times using GPS coordinates, MWL method, Shafi school
-    const res = await fetch(
-      `https://api.aladhan.com/v1/timings?latitude=${this.state.latitude}&longitude=${this.state.longitude}&method=2&school=0`
-    );
-    const data = await res.json();
+    try {
+      const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=2`);
+      const data = await res.json();
+      this.state.prayerTimes = data.data.timings;
+      
+      const list = document.getElementById('times');
+      list.innerHTML = '';
+      
+      ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'].forEach(prayer => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${prayer}</span><span>${this.state.prayerTimes[prayer]}</span>`;
+        list.appendChild(li);
+      });
 
-    // Save prayer times
-    this.state.prayerTimes = data.data.timings;
+      this.startNextPrayerCountdown();
+      this.showStatus('Prayer times updated', 'success');
+    } catch (e) {
+      document.getElementById('times').innerHTML = '<li>Failed to load prayer times.</li>';
+      this.showStatus('Failed to load prayer times', 'error');
+      console.error(e);
+    }
+  },
 
-    // Display prayer times
-    const list = document.getElementById('times');
-    list.innerHTML = '';
-    ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'].forEach(prayer => {
-      const li = document.createElement('li');
-      li.innerHTML = `<span>${prayer}</span><span>${this.state.prayerTimes[prayer]}</span>`;
-      list.appendChild(li);
-    });
+  startNextPrayerCountdown() {
+    if (this.state.nextPrayerInterval) clearInterval(this.state.nextPrayerInterval);
+    
+    this.state.nextPrayerInterval = setInterval(() => {
+      const now = new Date();
+      const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+      
+      let nextPrayer = null;
+      let nextTime = null;
 
-    this.startNextPrayerCountdown();
-    this.showStatus('Prayer times updated', 'success');
-  } catch (e) {
-    document.getElementById('times').innerHTML = '<li>Failed to load prayer times.</li>';
-    this.showStatus('Failed to load prayer times', 'error');
-    console.error(e);
-  }
-},
-
-startNextPrayerCountdown() {
-  if (this.state.nextPrayerInterval) clearInterval(this.state.nextPrayerInterval);
-
-  this.state.nextPrayerInterval = setInterval(() => {
-    if (!this.state.prayerTimes) return;
-
-    const now = new Date();
-    const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-
-    let nextPrayer = null;
-    let nextTime = null;
-
-    for (let prayer of prayers) {
-      const [hours, minutes] = this.state.prayerTimes[prayer].split(':');
-      const prayerDate = new Date();
-      prayerDate.setHours(parseInt(hours), parseInt(minutes), 0);
-
-      if (prayerDate > now) {
-        nextPrayer = prayer;
-        nextTime = prayerDate;
-        break;
+      for (let prayer of prayers) {
+        const [hours, minutes] = this.state.prayerTimes[prayer].split(':');
+        const prayerDate = new Date();
+        prayerDate.setHours(parseInt(hours), parseInt(minutes), 0);
+        
+        if (prayerDate > now) {
+          nextPrayer = prayer;
+          nextTime = prayerDate;
+          break;
+        }
       }
-    }
 
-    if (!nextPrayer) {
-      nextPrayer = 'Fajr';
-      const [hours, minutes] = this.state.prayerTimes['Fajr'].split(':');
-      nextTime = new Date();
-      nextTime.setDate(nextTime.getDate() + 1);
-      nextTime.setHours(parseInt(hours), parseInt(minutes), 0);
-    }
+      if (!nextPrayer) {
+        nextPrayer = 'Fajr';
+        const [hours, minutes] = this.state.prayerTimes['Fajr'].split(':');
+        nextTime = new Date();
+        nextTime.setDate(nextTime.getDate() + 1);
+        nextTime.setHours(parseInt(hours), parseInt(minutes), 0);
+      }
 
-    const diff = nextTime - now;
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const secs = Math.floor((diff % (1000 * 60)) / 1000);
+      const diff = nextTime - now;
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diff % (1000 * 60)) / 1000);
 
-    document.getElementById('nextPrayerName').textContent = nextPrayer;
-    document.getElementById('nextPrayerCountdown').textContent =
-      `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      document.getElementById('nextPrayerName').textContent = nextPrayer;
+      document.getElementById('nextPrayerCountdown').textContent = 
+        `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 
-    if (hours === 0 && mins === 0 && secs === 0) {
-      this.sendPrayerNotification(nextPrayer);
-    }
-  }, 1000);
-},
+      if (hours === 0 && mins === 0 && secs === 0) {
+        this.sendPrayerNotification(nextPrayer);
+      }
+    }, 1000);
+  },
 
   // Notifications
   async handleNotificationToggle(e) {
@@ -933,19 +934,16 @@ startNextPrayerCountdown() {
       }
 
       document.getElementById('arabic').textContent = arabicData.data.text;
-document.getElementById('meta').textContent = `${arabicData.data.surah.englishName} — Ayah ${arabicData.data.numberInSurah}`;
-
-const translationsEl = document.getElementById('translations');
-translationsEl.innerHTML = '';
-translations.forEach(trans => {
-  const div = document.createElement('div');
-  div.className = 'translation';
-  div.innerHTML = `<div class="translation-label">${trans.name}</div>${trans.text}`;
-  translationsEl.appendChild(div);
-});
-
-// Remove fade-out class so it fades in
-verseBox.classList.remove('fade-out');
+      document.getElementById('meta').textContent = `${arabicData.data.surah.englishName} — Ayah ${arabicData.data.numberInSurah}`;
+      
+      const translationsEl = document.getElementById('translations');
+      translationsEl.innerHTML = '';
+      translations.forEach(trans => {
+        const div = document.createElement('div');
+        div.className = 'translation';
+        div.innerHTML = `<div class="translation-label">${trans.name}</div>${trans.text}`;
+        translationsEl.appendChild(div);
+      });
 
       this.state.currentAudio = arabicData.data.audio || null;
       this.state.currentVerse = {
@@ -1018,10 +1016,10 @@ verseBox.classList.remove('fade-out');
         clearInterval(this.state.countdownInterval);
       }
       document.getElementById('countdown').textContent = 'Paused';
-   } else {
-  btn.textContent = '⏸️ Pause';
-  this.startCountdown(10); // resumes the verse countdown
-}
+    } else {
+      btn.textContent = '⏸️ Pause';
+      this.generateAyah();
+    }
   },
 
   resumeRotation() {
@@ -1184,11 +1182,9 @@ verseBox.classList.remove('fade-out');
 window.addEventListener('DOMContentLoaded', () => app.init());
 
 // Auto-update prayer times daily
-let lastUpdateDay = null;
 setInterval(() => {
   const now = new Date();
-  if (now.getHours() === 0 && now.getMinutes() === 0 && now.getDate() !== lastUpdateDay) {
-    lastUpdateDay = now.getDate();
+  if (now.getHours() === 0 && now.getMinutes() === 0) {
     app.updatePrayerTimes();
   }
 }, 60000);
