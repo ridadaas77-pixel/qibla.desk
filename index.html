@@ -7,7 +7,7 @@
 </head>
 <body>
 
-  <h1>QiblaDesk</h1>
+  <h1>Qibla Desk</h1>
 
   <section>
     <h2>Prayer Times</h2>
@@ -16,8 +16,15 @@
 
   <section>
     <h2>Qur’an Reflection</h2>
-    <p id="verse">Loading...</p>
-    <button onclick="loadVerse()">New Verse</button>
+
+    <div class="verse-box">
+      <p id="arabic"></p>
+      <p id="meta"></p>
+      <p id="english"></p>
+    </div>
+
+    <button id="generateBtn">Generate Ayah</button>
+    <p id="countdown"></p>
   </section>
 
   <script src="script.js"></script>
