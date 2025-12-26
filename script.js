@@ -1,4 +1,6 @@
+// -----------------------------
 // Prayer Times
+// -----------------------------
 fetch("https://api.aladhan.com/v1/timingsByCity?city=Duisburg&country=Germany&method=2")
   .then(res => res.json())
   .then(data => {
@@ -16,22 +18,9 @@ fetch("https://api.aladhan.com/v1/timingsByCity?city=Duisburg&country=Germany&me
     list.innerHTML = "<li>Failed to load prayer times.</li>";
   });
 
-// Random Quran Verse (local generator)
-const verses = [
-  {
-    arabic: "لِلَّهِ مَا فِي السَّمَاوَاتِ وَالْأَرْضِ ۚ إِنَّ اللَّهَ هُوَ الْغَنِيُّ الْحَمِيدُ",
-    surah: "Surah Ibrahim",
-    ayah: 8,
-    english: "To Allah belongs whatever is in the heavens and whatever is on the earth. Indeed, Allah is Free of need and Praiseworthy."
-  },
-  {
-    arabic: "إِنَّ مَعَ الْعُسْرِ يُسْرًا",
-    surah: "Surah Ash-Sharh",
-    ayah: 6,
-    english: "Indeed, with hardship comes ease."
-  }
-];
-
+// -----------------------------
+// Random Quran Verse Generator
+// -----------------------------
 const arabicEl = document.getElementById("arabic");
 const metaEl = document.getElementById("meta");
 const englishEl = document.getElementById("english");
@@ -40,20 +29,34 @@ const countdownEl = document.getElementById("countdown");
 
 let cooldown = false;
 
-btn.addEventListener("click", () => {
+btn.addEventListener("click", async () => {
   if (cooldown) return;
-
-  const random = verses[Math.floor(Math.random() * verses.length)];
-
-  arabicEl.textContent = random.arabic;
-  metaEl.textContent = `${random.surah} — Ayah ${random.ayah}`;
-  englishEl.textContent = random.english;
-
+  cooldown = true;
   startCountdown(5);
+
+  try {
+    // Fetch random ayah from the full Qur’an with English translation (Sahih)
+    const res = await fetch("https://api.alquran.cloud/v1/ayah/random/en.asad");
+    const data = await res.json();
+    const ayah = data.data;
+
+    arabicEl.textContent = ayah.text; // Arabic text
+    metaEl.textContent = `${ayah.surah.englishName} — Ayah ${ayah.numberInSurah}`;
+    
+    // English translation from API (Sahih / Asad version)
+    // If you want another translation, replace 'en.asad' in the URL with a supported version
+    englishEl.textContent = ayah.text; // Arabic is same as text; translation handled by endpoint
+  } catch (e) {
+    arabicEl.textContent = "Failed to load ayah.";
+    metaEl.textContent = "";
+    englishEl.textContent = "";
+  }
 });
 
+// -----------------------------
+// Countdown Timer
+// -----------------------------
 function startCountdown(seconds) {
-  cooldown = true;
   let timeLeft = seconds;
   countdownEl.textContent = `Next verse in ${timeLeft}s`;
 
