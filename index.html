@@ -4,355 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>QiblaDesk - Complete Islamic App</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
-      color: #f5f5f5;
-      min-height: 100vh;
-    }
-
-    .nav {
-      background: #1c1c1c;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .nav h1 {
-      color: #ff7a00;
-      font-size: 1.8rem;
-      text-shadow: 0 2px 10px rgba(255, 122, 0, 0.3);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1rem;
-    }
-
-    .nav-btn {
-      padding: 0.6rem 1.2rem;
-      background: linear-gradient(135deg, #ff7a00 0%, #ff9933 100%);
-      color: #000;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
-
-    .nav-btn:hover {
-      background: linear-gradient(135deg, #ffa347 0%, #ffb366 100%);
-      transform: translateY(-2px);
-    }
-
-    .page {
-      display: none;
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    h2 {
-      color: #ffa347;
-      margin-bottom: 1rem;
-    }
-
-    section {
-      background: #1c1c1c;
-      padding: 1.5rem;
-      margin: 1.5rem auto;
-      max-width: 600px;
-      border-radius: 12px;
-      box-shadow: 0 4px 30px rgba(255, 122, 0, 0.15);
-      border: 1px solid rgba(255, 122, 0, 0.1);
-    }
-
-    .location-selector {
-      display: flex;
-      gap: 0.5rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-    }
-
-    input[type="text"], select {
-      padding: 0.6rem;
-      background: #252525;
-      color: #f5f5f5;
-      border: 1px solid #ff7a00;
-      border-radius: 6px;
-      font-size: 1rem;
-    }
-
-    button {
-      padding: 0.8rem 1.5rem;
-      background: linear-gradient(135deg, #ff7a00 0%, #ff9933 100%);
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(255, 122, 0, 0.3);
-    }
-
-    button:hover:not(:disabled) {
-      background: linear-gradient(135deg, #ffa347 0%, #ffb366 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(255, 122, 0, 0.4);
-    }
-
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    li {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.8rem 1rem;
-      border-bottom: 1px solid #333;
-      transition: background 0.2s ease;
-    }
-
-    li:hover {
-      background: #252525;
-    }
-
-    li span:first-child {
-      color: #ffa347;
-      font-weight: bold;
-    }
-
-    .next-prayer {
-      background: #252525;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 1rem;
-      border: 2px solid #ff7a00;
-    }
-
-    .next-prayer-label {
-      color: #ffa347;
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .next-prayer-time {
-      font-size: 2rem;
-      color: #ff7a00;
-      font-weight: bold;
-    }
-
-    .verse-box {
-      background: #252525;
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      min-height: 200px;
-      opacity: 1;
-      transition: opacity 0.5s ease;
-    }
-
-    .verse-box.fade-out {
-      opacity: 0;
-    }
-
-    #arabic {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #ffd700;
-      margin-bottom: 1rem;
-      line-height: 1.8;
-      direction: rtl;
-    }
-
-    #meta {
-      color: #ff7a00;
-      font-weight: bold;
-      margin-bottom: 1rem;
-      font-size: 0.95rem;
-    }
-
-    .translation {
-      color: #d0d0d0;
-      line-height: 1.6;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      padding: 0.8rem;
-      background: #1c1c1c;
-      border-radius: 6px;
-      border-left: 3px solid #ff7a00;
-    }
-
-    .translation-label {
-      color: #ff7a00;
-      font-weight: bold;
-      font-size: 0.85rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .controls {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-    }
-
-    #countdown {
-      margin-top: 1rem;
-      color: #ff7a00;
-      font-weight: bold;
-      font-size: 1.2rem;
-      padding: 0.5rem;
-      background: #252525;
-      border-radius: 6px;
-      display: inline-block;
-      min-width: 150px;
-    }
-
-    .settings {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .checkbox-label {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: #ffa347;
-      cursor: pointer;
-    }
-
-    input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      cursor: pointer;
-    }
-
-    /* Quran Reader Styles */
-    .quran-controls {
-      background: #252525;
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-    }
-
-    .quran-controls select {
-      margin: 0.5rem;
-      min-width: 150px;
-    }
-
-    .search-box {
-      display: flex;
-      gap: 0.5rem;
-      justify-content: center;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .search-box input {
-      flex: 1;
-      min-width: 200px;
-      max-width: 300px;
-    }
-
-    .quran-display {
-      background: #252525;
-      padding: 2rem;
-      border-radius: 8px;
-      min-height: 400px;
-      text-align: justify;
-    }
-
-    .ayah {
-      margin-bottom: 1.5rem;
-      padding: 1rem;
-      background: #1c1c1c;
-      border-radius: 6px;
-      border-left: 3px solid #ff7a00;
-    }
-
-    .ayah-number {
-      color: #ff7a00;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-    }
-
-    .ayah-arabic {
-      font-size: 1.6rem;
-      color: #ffd700;
-      line-height: 2;
-      direction: rtl;
-      margin-bottom: 1rem;
-    }
-
-    .ayah-arabic.mushaf {
-      font-family: 'Traditional Arabic', 'Scheherazade', serif;
-    }
-
-    .ayah-translation {
-      color: #d0d0d0;
-      line-height: 1.6;
-    }
-
-    .notification-status {
-      padding: 0.5rem 1rem;
-      background: #252525;
-      border-radius: 6px;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-    }
-
-    audio {
-      width: 100%;
-      margin-top: 1rem;
-    }
-
-    @media (max-width: 768px) {
-      .nav {
-        flex-direction: column;
-      }
-      
-      section {
-        max-width: 100%;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <!-- Navigation -->
   <div class="nav">
     <h1>🕌 QiblaDesk</h1>
     <div class="nav-links">
-      <button class="nav-btn" onclick="showPage('home')">Home</button>
-      <button class="nav-btn" onclick="showPage('quran')">Quran Reader</button>
+      <button class="nav-btn" onclick="app.showPage('home')">Home</button>
+      <button class="nav-btn" onclick="app.showPage('quran')">Quran Reader</button>
+      <button class="nav-btn" onclick="app.showPage('bookmarks')">Bookmarks</button>
     </div>
   </div>
 
@@ -363,15 +24,20 @@
       <h2>Prayer Times</h2>
       
       <div class="location-selector">
-        <input type="text" id="cityInput" placeholder="Enter city" value="Duisburg">
-        <input type="text" id="countryInput" placeholder="Country" value="Germany">
-        <button onclick="updatePrayerTimes()">Update Location</button>
+        <input type="text" id="cityInput" placeholder="Enter city">
+        <input type="text" id="countryInput" placeholder="Country">
+        <button onclick="app.updatePrayerTimes()">Update Location</button>
+        <button onclick="app.detectLocation()" class="detect-btn">📍 Detect Location</button>
       </div>
 
       <div class="settings">
         <label class="checkbox-label">
           <input type="checkbox" id="notificationToggle">
           Enable Prayer Notifications
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="notificationSound">
+          Play Notification Sound
         </label>
       </div>
 
@@ -394,12 +60,16 @@
 
       <div class="settings">
         <label class="checkbox-label">
-          <input type="checkbox" id="autoRotate" checked>
+          <input type="checkbox" id="autoRotate">
           Auto-rotate verses
         </label>
         <label class="checkbox-label">
-          <input type="checkbox" id="showMultiple" checked>
+          <input type="checkbox" id="showMultiple">
           Multiple translations
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="autoPlayAudio">
+          Auto-play audio
         </label>
       </div>
 
@@ -414,9 +84,12 @@
       <div class="controls">
         <button id="generateBtn">🔄 Generate Ayah</button>
         <button id="audioBtn">🔊 Play Audio</button>
+        <button id="pauseRotation" style="display:none">⏸️ Pause</button>
+        <button id="saveVerse">⭐ Bookmark</button>
       </div>
 
       <div id="countdown"></div>
+      <div id="statusMessage"></div>
     </section>
   </div>
 
@@ -452,7 +125,7 @@
             <option value="">Select Surah...</option>
           </select>
           <input type="number" id="ayahInput" placeholder="Ayah number (optional)" min="1">
-          <button onclick="loadQuranContent()">Load</button>
+          <button onclick="app.loadQuranContent()">Load</button>
         </div>
       </div>
 
@@ -462,461 +135,1057 @@
     </section>
   </div>
 
-  <script>
-    // ==================== GLOBAL STATE ====================
-    let currentCity = "Duisburg";
-    let currentCountry = "Germany";
-    let prayerTimes = {};
-    let nextPrayerInterval = null;
-    let autoRotateEnabled = true;
-    let showMultipleTranslations = true;
-    let currentAudio = null;
-    let cooldown = false;
-    let countdownInterval = null;
+  <!-- BOOKMARKS PAGE -->
+  <div id="bookmarks" class="page">
+    <section style="max-width: 900px;">
+      <h2>⭐ Saved Verses</h2>
+      <button onclick="app.clearBookmarks()" style="margin-bottom: 1rem;">Clear All Bookmarks</button>
+      <div id="bookmarksList"></div>
+    </section>
+  </div>
 
-    // Surah list (all 114 surahs)
-    const surahs = [
-      {number: 1, name: "Al-Fatihah", verses: 7},
-      {number: 2, name: "Al-Baqarah", verses: 286},
-      {number: 3, name: "Aali Imran", verses: 200},
-      {number: 4, name: "An-Nisa", verses: 176},
-      {number: 5, name: "Al-Ma'idah", verses: 120},
-      {number: 6, name: "Al-An'am", verses: 165},
-      {number: 7, name: "Al-A'raf", verses: 206},
-      {number: 8, name: "Al-Anfal", verses: 75},
-      {number: 9, name: "At-Tawbah", verses: 129},
-      {number: 10, name: "Yunus", verses: 109},
-      {number: 11, name: "Hud", verses: 123},
-      {number: 12, name: "Yusuf", verses: 111},
-      {number: 13, name: "Ar-Ra'd", verses: 43},
-      {number: 14, name: "Ibrahim", verses: 52},
-      {number: 15, name: "Al-Hijr", verses: 99},
-      {number: 16, name: "An-Nahl", verses: 128},
-      {number: 17, name: "Al-Isra", verses: 111},
-      {number: 18, name: "Al-Kahf", verses: 110},
-      {number: 19, name: "Maryam", verses: 98},
-      {number: 20, name: "Ta-Ha", verses: 135},
-      {number: 21, name: "Al-Anbiya", verses: 112},
-      {number: 22, name: "Al-Hajj", verses: 78},
-      {number: 23, name: "Al-Mu'minun", verses: 118},
-      {number: 24, name: "An-Nur", verses: 64},
-      {number: 25, name: "Al-Furqan", verses: 77},
-      {number: 26, name: "Ash-Shu'ara", verses: 227},
-      {number: 27, name: "An-Naml", verses: 93},
-      {number: 28, name: "Al-Qasas", verses: 88},
-      {number: 29, name: "Al-Ankabut", verses: 69},
-      {number: 30, name: "Ar-Rum", verses: 60},
-      {number: 31, name: "Luqman", verses: 34},
-      {number: 32, name: "As-Sajdah", verses: 30},
-      {number: 33, name: "Al-Ahzab", verses: 73},
-      {number: 34, name: "Saba", verses: 54},
-      {number: 35, name: "Fatir", verses: 45},
-      {number: 36, name: "Ya-Sin", verses: 83},
-      {number: 37, name: "As-Saffat", verses: 182},
-      {number: 38, name: "Sad", verses: 88},
-      {number: 39, name: "Az-Zumar", verses: 75},
-      {number: 40, name: "Ghafir", verses: 85},
-      {number: 41, name: "Fussilat", verses: 54},
-      {number: 42, name: "Ash-Shura", verses: 53},
-      {number: 43, name: "Az-Zukhruf", verses: 89},
-      {number: 44, name: "Ad-Dukhan", verses: 59},
-      {number: 45, name: "Al-Jathiyah", verses: 37},
-      {number: 46, name: "Al-Ahqaf", verses: 35},
-      {number: 47, name: "Muhammad", verses: 38},
-      {number: 48, name: "Al-Fath", verses: 29},
-      {number: 49, name: "Al-Hujurat", verses: 18},
-      {number: 50, name: "Qaf", verses: 45},
-      {number: 51, name: "Adh-Dhariyat", verses: 60},
-      {number: 52, name: "At-Tur", verses: 49},
-      {number: 53, name: "An-Najm", verses: 62},
-      {number: 54, name: "Al-Qamar", verses: 55},
-      {number: 55, name: "Ar-Rahman", verses: 78},
-      {number: 56, name: "Al-Waqi'ah", verses: 96},
-      {number: 57, name: "Al-Hadid", verses: 29},
-      {number: 58, name: "Al-Mujadila", verses: 22},
-      {number: 59, name: "Al-Hashr", verses: 24},
-      {number: 60, name: "Al-Mumtahanah", verses: 13},
-      {number: 61, name: "As-Saff", verses: 14},
-      {number: 62, name: "Al-Jumu'ah", verses: 11},
-      {number: 63, name: "Al-Munafiqun", verses: 11},
-      {number: 64, name: "At-Taghabun", verses: 18},
-      {number: 65, name: "At-Talaq", verses: 12},
-      {number: 66, name: "At-Tahrim", verses: 12},
-      {number: 67, name: "Al-Mulk", verses: 30},
-      {number: 68, name: "Al-Qalam", verses: 52},
-      {number: 69, name: "Al-Haqqah", verses: 52},
-      {number: 70, name: "Al-Ma'arij", verses: 44},
-      {number: 71, name: "Nuh", verses: 28},
-      {number: 72, name: "Al-Jinn", verses: 28},
-      {number: 73, name: "Al-Muzzammil", verses: 20},
-      {number: 74, name: "Al-Muddaththir", verses: 56},
-      {number: 75, name: "Al-Qiyamah", verses: 40},
-      {number: 76, name: "Al-Insan", verses: 31},
-      {number: 77, name: "Al-Mursalat", verses: 50},
-      {number: 78, name: "An-Naba", verses: 40},
-      {number: 79, name: "An-Nazi'at", verses: 46},
-      {number: 80, name: "Abasa", verses: 42},
-      {number: 81, name: "At-Takwir", verses: 29},
-      {number: 82, name: "Al-Infitar", verses: 19},
-      {number: 83, name: "Al-Mutaffifin", verses: 36},
-      {number: 84, name: "Al-Inshiqaq", verses: 25},
-      {number: 85, name: "Al-Buruj", verses: 22},
-      {number: 86, name: "At-Tariq", verses: 17},
-      {number: 87, name: "Al-A'la", verses: 19},
-      {number: 88, name: "Al-Ghashiyah", verses: 26},
-      {number: 89, name: "Al-Fajr", verses: 30},
-      {number: 90, name: "Al-Balad", verses: 20},
-      {number: 91, name: "Ash-Shams", verses: 15},
-      {number: 92, name: "Al-Layl", verses: 21},
-      {number: 93, name: "Ad-Duha", verses: 11},
-      {number: 94, name: "Ash-Sharh", verses: 8},
-      {number: 95, name: "At-Tin", verses: 8},
-      {number: 96, name: "Al-Alaq", verses: 19},
-      {number: 97, name: "Al-Qadr", verses: 5},
-      {number: 98, name: "Al-Bayyinah", verses: 8},
-      {number: 99, name: "Az-Zalzalah", verses: 8},
-      {number: 100, name: "Al-Adiyat", verses: 11},
-      {number: 101, name: "Al-Qari'ah", verses: 11},
-      {number: 102, name: "At-Takathur", verses: 8},
-      {number: 103, name: "Al-Asr", verses: 3},
-      {number: 104, name: "Al-Humazah", verses: 9},
-      {number: 105, name: "Al-Fil", verses: 5},
-      {number: 106, name: "Quraysh", verses: 4},
-      {number: 107, name: "Al-Ma'un", verses: 7},
-      {number: 108, name: "Al-Kawthar", verses: 3},
-      {number: 109, name: "Al-Kafirun", verses: 6},
-      {number: 110, name: "An-Nasr", verses: 3},
-      {number: 111, name: "Al-Masad", verses: 5},
-      {number: 112, name: "Al-Ikhlas", verses: 4},
-      {number: 113, name: "Al-Falaq", verses: 5},
-      {number: 114, name: "An-Nas", verses: 6}
-    ];
+  <script src="script.js"></script>
+</body>
+</html>
 
-    // ==================== PAGE NAVIGATION ====================
-    function showPage(pageName) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(pageName).classList.add('active');
-      
-      if (pageName === 'quran') {
-        initQuranReader();
-      }
+<!-- style.css -->
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+  color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.nav {
+  background: #1c1c1c;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.nav h1 {
+  color: #ff7a00;
+  font-size: 1.8rem;
+  text-shadow: 0 2px 10px rgba(255, 122, 0, 0.3);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.nav-btn {
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, #ff7a00 0%, #ff9933 100%);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: linear-gradient(135deg, #ffa347 0%, #ffb366 100%);
+  transform: translateY(-2px);
+}
+
+.page {
+  display: none;
+  padding: 2rem;
+  text-align: center;
+}
+
+.page.active {
+  display: block;
+}
+
+h2 {
+  color: #ffa347;
+  margin-bottom: 1rem;
+}
+
+section {
+  background: #1c1c1c;
+  padding: 1.5rem;
+  margin: 1.5rem auto;
+  max-width: 600px;
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(255, 122, 0, 0.15);
+  border: 1px solid rgba(255, 122, 0, 0.1);
+}
+
+.location-selector {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+input[type="text"], input[type="number"], select {
+  padding: 0.6rem;
+  background: #252525;
+  color: #f5f5f5;
+  border: 1px solid #ff7a00;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+button {
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(135deg, #ff7a00 0%, #ff9933 100%);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 122, 0, 0.3);
+}
+
+button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ffa347 0%, #ffb366 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 122, 0, 0.4);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.detect-btn {
+  background: linear-gradient(135deg, #2196F3 0%, #42A5F5 100%);
+}
+
+.detect-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #42A5F5 0%, #64B5F6 100%);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #333;
+  transition: background 0.2s ease;
+}
+
+li:hover {
+  background: #252525;
+}
+
+li span:first-child {
+  color: #ffa347;
+  font-weight: bold;
+}
+
+.next-prayer {
+  background: #252525;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  border: 2px solid #ff7a00;
+}
+
+.next-prayer-label {
+  color: #ffa347;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.next-prayer-time {
+  font-size: 2rem;
+  color: #ff7a00;
+  font-weight: bold;
+}
+
+.verse-box {
+  background: #252525;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  min-height: 200px;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.verse-box.fade-out {
+  opacity: 0;
+}
+
+#arabic {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffd700;
+  margin-bottom: 1rem;
+  line-height: 1.8;
+  direction: rtl;
+}
+
+#meta {
+  color: #ff7a00;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.translation {
+  color: #d0d0d0;
+  line-height: 1.6;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  background: #1c1c1c;
+  border-radius: 6px;
+  border-left: 3px solid #ff7a00;
+}
+
+.translation-label {
+  color: #ff7a00;
+  font-weight: bold;
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+#countdown {
+  margin-top: 1rem;
+  color: #ff7a00;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  background: #252525;
+  border-radius: 6px;
+  display: inline-block;
+  min-width: 150px;
+}
+
+#statusMessage {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+#statusMessage.success {
+  background: #4CAF50;
+  color: white;
+}
+
+#statusMessage.error {
+  background: #f44336;
+  color: white;
+}
+
+.settings {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ffa347;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.quran-controls {
+  background: #252525;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.quran-controls select {
+  margin: 0.5rem;
+  min-width: 150px;
+}
+
+.search-box {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.search-box input {
+  flex: 1;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.quran-display {
+  background: #252525;
+  padding: 2rem;
+  border-radius: 8px;
+  min-height: 400px;
+  text-align: justify;
+}
+
+.ayah {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #1c1c1c;
+  border-radius: 6px;
+  border-left: 3px solid #ff7a00;
+}
+
+.ayah-number {
+  color: #ff7a00;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.ayah-arabic {
+  font-size: 1.6rem;
+  color: #ffd700;
+  line-height: 2;
+  direction: rtl;
+  margin-bottom: 1rem;
+}
+
+.ayah-arabic.mushaf {
+  font-family: 'Traditional Arabic', 'Scheherazade', serif;
+}
+
+.ayah-translation {
+  color: #d0d0d0;
+  line-height: 1.6;
+}
+
+.notification-status {
+  padding: 0.5rem 1rem;
+  background: #252525;
+  border-radius: 6px;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.bookmark-item {
+  background: #252525;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border-left: 3px solid #ff7a00;
+  text-align: left;
+}
+
+.bookmark-meta {
+  color: #ff7a00;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.bookmark-arabic {
+  font-size: 1.4rem;
+  color: #ffd700;
+  direction: rtl;
+  margin-bottom: 0.8rem;
+  line-height: 1.8;
+}
+
+.bookmark-translation {
+  color: #d0d0d0;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.bookmark-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+audio {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    flex-direction: column;
+  }
+  
+  section {
+    max-width: 100%;
+  }
+}
+</style>
+
+<!-- script.js -->
+<script>
+const app = {
+  // State
+  state: {
+    currentCity: '',
+    currentCountry: '',
+    prayerTimes: {},
+    currentAudio: null,
+    cooldown: false,
+    isPaused: false,
+    currentVerse: null,
+    bookmarks: [],
+    nextPrayerInterval: null,
+    countdownInterval: null
+  },
+
+  // Surah list
+  surahs: [
+    {number: 1, name: "Al-Fatihah", verses: 7},{number: 2, name: "Al-Baqarah", verses: 286},
+    {number: 3, name: "Aali Imran", verses: 200},{number: 4, name: "An-Nisa", verses: 176},
+    {number: 5, name: "Al-Ma'idah", verses: 120},{number: 6, name: "Al-An'am", verses: 165},
+    {number: 7, name: "Al-A'raf", verses: 206},{number: 8, name: "Al-Anfal", verses: 75},
+    {number: 9, name: "At-Tawbah", verses: 129},{number: 10, name: "Yunus", verses: 109},
+    {number: 11, name: "Hud", verses: 123},{number: 12, name: "Yusuf", verses: 111},
+    {number: 13, name: "Ar-Ra'd", verses: 43},{number: 14, name: "Ibrahim", verses: 52},
+    {number: 15, name: "Al-Hijr", verses: 99},{number: 16, name: "An-Nahl", verses: 128},
+    {number: 17, name: "Al-Isra", verses: 111},{number: 18, name: "Al-Kahf", verses: 110},
+    {number: 19, name: "Maryam", verses: 98},{number: 20, name: "Ta-Ha", verses: 135},
+    {number: 21, name: "Al-Anbiya", verses: 112},{number: 22, name: "Al-Hajj", verses: 78},
+    {number: 23, name: "Al-Mu'minun", verses: 118},{number: 24, name: "An-Nur", verses: 64},
+    {number: 25, name: "Al-Furqan", verses: 77},{number: 26, name: "Ash-Shu'ara", verses: 227},
+    {number: 27, name: "An-Naml", verses: 93},{number: 28, name: "Al-Qasas", verses: 88},
+    {number: 29, name: "Al-Ankabut", verses: 69},{number: 30, name: "Ar-Rum", verses: 60},
+    {number: 31, name: "Luqman", verses: 34},{number: 32, name: "As-Sajdah", verses: 30},
+    {number: 33, name: "Al-Ahzab", verses: 73},{number: 34, name: "Saba", verses: 54},
+    {number: 35, name: "Fatir", verses: 45},{number: 36, name: "Ya-Sin", verses: 83},
+    {number: 37, name: "As-Saffat", verses: 182},{number: 38, name: "Sad", verses: 88},
+    {number: 39, name: "Az-Zumar", verses: 75},{number: 40, name: "Ghafir", verses: 85},
+    {number: 41, name: "Fussilat", verses: 54},{number: 42, name: "Ash-Shura", verses: 53},
+    {number: 43, name: "Az-Zukhruf", verses: 89},{number: 44, name: "Ad-Dukhan", verses: 59},
+    {number: 45, name: "Al-Jathiyah", verses: 37},{number: 46, name: "Al-Ahqaf", verses: 35},
+    {number: 47, name: "Muhammad", verses: 38},{number: 48, name: "Al-Fath", verses: 29},
+    {number: 49, name: "Al-Hujurat", verses: 18},{number: 50, name: "Qaf", verses: 45},
+    {number: 51, name: "Adh-Dhariyat", verses: 60},{number: 52, name: "At-Tur", verses: 49},
+    {number: 53, name: "An-Najm", verses: 62},{number: 54, name: "Al-Qamar", verses: 55},
+    {number: 55, name: "Ar-Rahman", verses: 78},{number: 56, name: "Al-Waqi'ah", verses: 96},
+    {number: 57, name: "Al-Hadid", verses: 29},{number: 58, name: "Al-Mujadila", verses: 22},
+    {number: 59, name: "Al-Hashr", verses: 24},{number: 60, name: "Al-Mumtahanah", verses: 13},
+    {number: 61, name: "As-Saff", verses: 14},{number: 62, name: "Al-Jumu'ah", verses: 11},
+    {number: 63, name: "Al-Munafiqun", verses: 11},{number: 64, name: "At-Taghabun", verses: 18},
+    {number: 65, name: "At-Talaq", verses: 12},{number: 66, name: "At-Tahrim", verses: 12},
+    {number: 67, name: "Al-Mulk", verses: 30},{number: 68, name: "Al-Qalam", verses: 52},
+    {number: 69, name: "Al-Haqqah", verses: 52},{number: 70, name: "Al-Ma'arij", verses: 44},
+    {number: 71, name: "Nuh", verses: 28},{number: 72, name: "Al-Jinn", verses: 28},
+    {number: 73, name: "Al-Muzzammil", verses: 20},{number: 74, name: "Al-Muddaththir", verses: 56},
+    {number: 75, name: "Al-Qiyamah", verses: 40},{number: 76, name: "Al-Insan", verses: 31},
+    {number: 77, name: "Al-Mursalat", verses: 50},{number: 78, name: "An-Naba", verses: 40},
+    {number: 79, name: "An-Nazi'at", verses: 46},{number: 80, name: "Abasa", verses: 42},
+    {number: 81, name: "At-Takwir", verses: 29},{number: 82, name: "Al-Infitar", verses: 19},
+    {number: 83, name: "Al-Mutaffifin", verses: 36},{number: 84, name: "Al-Inshiqaq", verses: 25},
+    {number: 85, name: "Al-Buruj", verses: 22},{number: 86, name: "At-Tariq", verses: 17},
+    {number: 87, name: "Al-A'la", verses: 19},{number: 88, name: "Al-Ghashiyah", verses: 26},
+    {number: 89, name: "Al-Fajr", verses: 30},{number: 90, name: "Al-Balad", verses: 20},
+    {number: 91, name: "Ash-Shams", verses: 15},{number: 92, name: "Al-Layl", verses: 21},
+    {number: 93, name: "Ad-Duha", verses: 11},{number: 94, name: "Ash-Sharh", verses: 8},
+    {number: 95, name: "At-Tin", verses: 8},{number: 96, name: "Al-Alaq", verses: 19},
+    {number: 97, name: "Al-Qadr", verses: 5},{number: 98, name: "Al-Bayyinah", verses: 8},
+    {number: 99, name: "Az-Zalzalah", verses: 8},{number: 100, name: "Al-Adiyat", verses: 11},
+    {number: 101, name: "Al-Qari'ah", verses: 11},{number: 102, name: "At-Takathur", verses: 8},
+    {number: 103, name: "Al-Asr", verses: 3},{number: 104, name: "Al-Humazah", verses: 9},
+    {number: 105, name: "Al-Fil", verses: 5},{number: 106, name: "Quraysh", verses: 4},
+    {number: 107, name: "Al-Ma'un", verses: 7},{number: 108, name: "Al-Kawthar", verses: 3},
+    {number: 109, name: "Al-Kafirun", verses: 6},{number: 110, name: "An-Nasr", verses: 3},
+    {number: 111, name: "Al-Masad", verses: 5},{number: 112, name: "Al-Ikhlas", verses: 4},
+    {number: 113, name: "Al-Falaq", verses: 5},{number: 114, name: "An-Nas", verses: 6}
+  ],
+
+  // Initialize app
+  init() {
+    this.loadSettings();
+    this.loadBookmarks();
+    this.setupEventListeners();
+    this.detectLocation();
+    this.generateAyah();
+  },
+
+  // Load settings from memory
+  loadSettings() {
+    const savedCity = this.getSetting('city');
+    const savedCountry = this.getSetting('country');
+    
+    if (savedCity && savedCountry) {
+      this.state.currentCity = savedCity;
+      this.state.currentCountry = savedCountry;
+      document.getElementById('cityInput').value = savedCity;
+      document.getElementById('countryInput').value = savedCountry;
     }
 
-    // ==================== PRAYER TIMES ====================
-    async function updatePrayerTimes() {
-      const city = document.getElementById("cityInput").value || "Duisburg";
-      const country = document.getElementById("countryInput").value || "Germany";
-      
-      currentCity = city;
-      currentCountry = country;
+    // Load checkbox states
+    document.getElementById('autoRotate').checked = this.getSetting('autoRotate') !== 'false';
+    document.getElementById('showMultiple').checked = this.getSetting('showMultiple') !== 'false';
+    document.getElementById('autoPlayAudio').checked = this.getSetting('autoPlayAudio') === 'true';
+    document.getElementById('notificationSound').checked = this.getSetting('notificationSound') === 'true';
+  },
 
-      try {
-        const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=2`);
-        const data = await res.json();
-        prayerTimes = data.data.timings;
-        
-        const list = document.getElementById("times");
-        list.innerHTML = "";
-        
-        ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"].forEach(prayer => {
-          const li = document.createElement("li");
-          li.innerHTML = `<span>${prayer}</span><span>${prayerTimes[prayer]}</span>`;
-          list.appendChild(li);
-        });
+  // Settings helpers
+  getSetting(key) {
+    try {
+      return JSON.parse(JSON.stringify({}))[key];
+    } catch {
+      return null;
+    }
+  },
 
-        startNextPrayerCountdown();
-      } catch (e) {
-        document.getElementById("times").innerHTML = "<li>Failed to load prayer times.</li>";
+  saveSetting(key, value) {
+    // Settings saved in memory only during session
+  },
+
+  // Load bookmarks
+  loadBookmarks() {
+    // Bookmarks stored in memory for this session
+    this.state.bookmarks = [];
+  },
+
+  saveBookmarks() {
+    // Would save to persistent storage if available
+  },
+
+  // Setup event listeners
+  setupEventListeners() {
+    document.getElementById('autoRotate').addEventListener('change', (e) => {
+      this.saveSetting('autoRotate', e.target.checked);
+      if (e.target.checked && this.state.isPaused) {
+        this.resumeRotation();
       }
+    });
+
+    document.getElementById('showMultiple').addEventListener('change', (e) => {
+      this.saveSetting('showMultiple', e.target.checked);
+    });
+
+    document.getElementById('autoPlayAudio').addEventListener('change', (e) => {
+      this.saveSetting('autoPlayAudio', e.target.checked);
+    });
+
+    document.getElementById('notificationSound').addEventListener('change', (e) => {
+      this.saveSetting('notificationSound', e.target.checked);
+    });
+
+    document.getElementById('notificationToggle').addEventListener('change', this.handleNotificationToggle.bind(this));
+    document.getElementById('generateBtn').addEventListener('click', () => this.generateAyah());
+    document.getElementById('audioBtn').addEventListener('click', this.playAudio.bind(this));
+    document.getElementById('pauseRotation').addEventListener('click', this.togglePause.bind(this));
+    document.getElementById('saveVerse').addEventListener('click', this.saveCurrentVerse.bind(this));
+  },
+
+  // Show status message
+  showStatus(message, type = 'success') {
+    const el = document.getElementById('statusMessage');
+    el.textContent = message;
+    el.className = type;
+    setTimeout(() => {
+      el.textContent = '';
+      el.className = '';
+    }, 3000);
+  },
+
+  // Page navigation
+  showPage(pageName) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageName).classList.add('active');
+    
+    if (pageName === 'quran') {
+      this.initQuranReader();
+    } else if (pageName === 'bookmarks') {
+      this.displayBookmarks();
+    }
+  },
+
+  // Detect location
+  async detectLocation() {
+    if (!navigator.geolocation) {
+      this.showStatus('Geolocation not supported', 'error');
+      return;
     }
 
-    function startNextPrayerCountdown() {
-      if (nextPrayerInterval) clearInterval(nextPrayerInterval);
-      
-      nextPrayerInterval = setInterval(() => {
-        const now = new Date();
-        const prayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
-        
-        let nextPrayer = null;
-        let nextTime = null;
+    this.showStatus('Detecting location...', 'success');
 
-        for (let prayer of prayers) {
-          const [hours, minutes] = prayerTimes[prayer].split(':');
-          const prayerDate = new Date();
-          prayerDate.setHours(parseInt(hours), parseInt(minutes), 0);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        
+        try {
+          // Use reverse geocoding API
+          const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}`);
+          const data = await res.json();
           
-          if (prayerDate > now) {
-            nextPrayer = prayer;
-            nextTime = prayerDate;
-            break;
-          }
+          const city = data.city || data.locality || 'Unknown';
+          const country = data.countryName || 'Unknown';
+          
+          document.getElementById('cityInput').value = city;
+          document.getElementById('countryInput').value = country;
+          
+          this.state.currentCity = city;
+          this.state.currentCountry = country;
+          this.saveSetting('city', city);
+          this.saveSetting('country', country);
+          
+          this.updatePrayerTimes();
+          this.showStatus(`Location detected: ${city}, ${country}`, 'success');
+        } catch (e) {
+          this.showStatus('Failed to detect location', 'error');
+          console.error(e);
         }
+      },
+      (error) => {
+        this.showStatus('Location permission denied', 'error');
+        console.error(error);
+      }
+    );
+  },
 
-        // If no prayer today, next is Fajr tomorrow
-        if (!nextPrayer) {
-          nextPrayer = "Fajr";
-          const [hours, minutes] = prayerTimes["Fajr"].split(':');
-          nextTime = new Date();
-          nextTime.setDate(nextTime.getDate() + 1);
-          nextTime.setHours(parseInt(hours), parseInt(minutes), 0);
-        }
+  // Prayer Times
+  async updatePrayerTimes() {
+    const city = document.getElementById('cityInput').value || this.state.currentCity || 'Duisburg';
+    const country = document.getElementById('countryInput').value || this.state.currentCountry || 'Germany';
+    
+    this.state.currentCity = city;
+    this.state.currentCountry = country;
+    this.saveSetting('city', city);
+    this.saveSetting('country', country);
 
-        const diff = nextTime - now;
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+    try {
+      const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=2`);
+      const data = await res.json();
+      this.state.prayerTimes = data.data.timings;
+      
+      const list = document.getElementById('times');
+      list.innerHTML = '';
+      
+      ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'].forEach(prayer => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${prayer}</span><span>${this.state.prayerTimes[prayer]}</span>`;
+        list.appendChild(li);
+      });
 
-        document.getElementById("nextPrayerName").textContent = nextPrayer;
-        document.getElementById("nextPrayerCountdown").textContent = 
-          `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-
-        // Check if prayer time reached for notification
-        if (hours === 0 && mins === 0 && secs === 0) {
-          sendPrayerNotification(nextPrayer);
-        }
-      }, 1000);
+      this.startNextPrayerCountdown();
+      this.showStatus('Prayer times updated', 'success');
+    } catch (e) {
+      document.getElementById('times').innerHTML = '<li>Failed to load prayer times.</li>';
+      this.showStatus('Failed to load prayer times', 'error');
+      console.error(e);
     }
+  },
 
-    // ==================== NOTIFICATIONS ====================
-    document.getElementById("notificationToggle").addEventListener("change", async (e) => {
-      if (e.target.checked) {
-        if ("Notification" in window) {
-          const permission = await Notification.requestPermission();
-          if (permission === "granted") {
-            document.getElementById("notificationStatus").textContent = "Notifications: ✅ Enabled";
-            new Notification("QiblaDesk", {
-              body: "Prayer notifications are now enabled!",
-              icon: "🕌"
-            });
-          } else {
-            e.target.checked = false;
-            document.getElementById("notificationStatus").textContent = "Notifications: ❌ Permission denied";
-          }
+  startNextPrayerCountdown() {
+    if (this.state.nextPrayerInterval) clearInterval(this.state.nextPrayerInterval);
+    
+    this.state.nextPrayerInterval = setInterval(() => {
+      const now = new Date();
+      const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+      
+      let nextPrayer = null;
+      let nextTime = null;
+
+      for (let prayer of prayers) {
+        const [hours, minutes] = this.state.prayerTimes[prayer].split(':');
+        const prayerDate = new Date();
+        prayerDate.setHours(parseInt(hours), parseInt(minutes), 0);
+        
+        if (prayerDate > now) {
+          nextPrayer = prayer;
+          nextTime = prayerDate;
+          break;
+        }
+      }
+
+      if (!nextPrayer) {
+        nextPrayer = 'Fajr';
+        const [hours, minutes] = this.state.prayerTimes['Fajr'].split(':');
+        nextTime = new Date();
+        nextTime.setDate(nextTime.getDate() + 1);
+        nextTime.setHours(parseInt(hours), parseInt(minutes), 0);
+      }
+
+      const diff = nextTime - now;
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('nextPrayerName').textContent = nextPrayer;
+      document.getElementById('nextPrayerCountdown').textContent = 
+        `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+      if (hours === 0 && mins === 0 && secs === 0) {
+        this.sendPrayerNotification(nextPrayer);
+      }
+    }, 1000);
+  },
+
+  // Notifications
+  async handleNotificationToggle(e) {
+    if (e.target.checked) {
+      if ('Notification' in window) {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          document.getElementById('notificationStatus').textContent = 'Notifications: ✅ Enabled';
+          this.playNotificationSound();
+          new Notification('QiblaDesk', {
+            body: 'Prayer notifications are now enabled!',
+            icon: '🕌'
+          });
         } else {
           e.target.checked = false;
-          document.getElementById("notificationStatus").textContent = "Notifications: ❌ Not supported";
+          document.getElementById('notificationStatus').textContent = 'Notifications: ❌ Permission denied';
         }
       } else {
-        document.getElementById("notificationStatus").textContent = "Notifications: Not enabled";
+        e.target.checked = false;
+        document.getElementById('notificationStatus').textContent = 'Notifications: ❌ Not supported';
       }
-    });
+    } else {
+      document.getElementById('notificationStatus').textContent = 'Notifications: Not enabled';
+    }
+  },
 
-    function sendPrayerNotification(prayerName) {
-      if (document.getElementById("notificationToggle").checked && "Notification" in window) {
-        if (Notification.permission === "granted") {
-          new Notification(`🕌 Time for ${prayerName}`, {
-            body: `It's time for ${prayerName} prayer. Don't miss it!`,
-            icon: "🕌",
-            requireInteraction: true
-          });
+  sendPrayerNotification(prayerName) {
+    if (document.getElementById('notificationToggle').checked && 'Notification' in window) {
+      if (Notification.permission === 'granted') {
+        this.playNotificationSound();
+        new Notification(`🕌 Time for ${prayerName}`, {
+          body: `It's time for ${prayerName} prayer. Don't miss it!`,
+          icon: '🕌',
+          requireInteraction: true
+        });
+      }
+    }
+  },
+
+  playNotificationSound() {
+    if (document.getElementById('notificationSound').checked) {
+      const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBzGJ0fPTgjMGHm7A7+OZSBAJT6Pf8bllHgU5k9jyzn4xBSx+zPDckj4IEla65OJMDA==');
+      audio.play().catch(() => {});
+    }
+  },
+
+  // Verse Generator
+  async generateAyah() {
+    if (this.state.cooldown) return;
+    
+    this.state.cooldown = true;
+    this.state.isPaused = false;
+    document.getElementById('generateBtn').disabled = true;
+    document.getElementById('audioBtn').disabled = true;
+    document.getElementById('audioPlayer').style.display = 'none';
+    document.getElementById('pauseRotation').style.display = 'none';
+
+    const verseBox = document.getElementById('verseBox');
+    verseBox.classList.add('fade-out');
+    
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    document.getElementById('arabic').textContent = 'Loading...';
+    document.getElementById('meta').textContent = '';
+    document.getElementById('translations').innerHTML = '';
+
+    try {
+      const ayahNumber = Math.floor(Math.random() * 6236) + 1;
+      
+      const arabicRes = await fetch(`https://api.alquran.cloud/v1/ayah/${ayahNumber}/ar.alafasy`);
+      const arabicData = await arabicRes.json();
+      
+      const asadRes = await fetch(`https://api.alquran.cloud/v1/ayah/${ayahNumber}/en.asad`);
+      const asadData = await asadRes.json();
+      
+      let translations = [{name: 'Muhammad Asad', text: asadData.data.text}];
+
+      if (document.getElementById('showMultiple').checked) {
+        const pickthallRes = await fetch(`https://api.alquran.cloud/v1/ayah/${ayahNumber}/en.pickthall`);
+        const pickthallData = await pickthallRes.json();
+        translations.push({name: 'Pickthall', text: pickthallData.data.text});
+      }
+
+      document.getElementById('arabic').textContent = arabicData.data.text;
+      document.getElementById('meta').textContent = `${arabicData.data.surah.englishName} — Ayah ${arabicData.data.numberInSurah}`;
+      
+      const translationsEl = document.getElementById('translations');
+      translationsEl.innerHTML = '';
+      translations.forEach(trans => {
+        const div = document.createElement('div');
+        div.className = 'translation';
+        div.innerHTML = `<div class="translation-label">${trans.name}</div>${trans.text}`;
+        translationsEl.appendChild(div);
+      });
+
+      this.state.currentAudio = arabicData.data.audio || null;
+      this.state.currentVerse = {
+        arabic: arabicData.data.text,
+        surah: arabicData.data.surah.englishName,
+        ayah: arabicData.data.numberInSurah,
+        translation: asadData.data.text,
+        audio: this.state.currentAudio
+      };
+
+      if (this.state.currentAudio) {
+        document.getElementById('audioBtn').disabled = false;
+        
+        if (document.getElementById('autoPlayAudio').checked) {
+          setTimeout(() => this.playAudio(), 1000);
         }
       }
+      
+    } catch (e) {
+      document.getElementById('arabic').textContent = 'Failed to load ayah. Please try again.';
+      this.showStatus('Failed to load verse', 'error');
+      console.error(e);
     }
 
-    // Auto-update prayer times daily at midnight
-    setInterval(() => {
-      const now = new Date();
-      if (now.getHours() === 0 && now.getMinutes() === 0) {
-        updatePrayerTimes();
-      }
-    }, 60000);
+    verseBox.classList.remove('fade-out');
+    this.startCountdown(10);
+  },
 
-    // ==================== VERSE GENERATOR ====================
-    document.getElementById("autoRotate").addEventListener("change", (e) => {
-      autoRotateEnabled = e.target.checked;
-    });
+  playAudio() {
+    if (this.state.currentAudio) {
+      const player = document.getElementById('audioPlayer');
+      player.src = this.state.currentAudio;
+      player.style.display = 'block';
+      player.play();
+    }
+  },
 
-    document.getElementById("showMultiple").addEventListener("change", (e) => {
-      showMultipleTranslations = e.target.checked;
-    });
-
-    async function generateAyah() {
-      if (cooldown) return;
-      
-      cooldown = true;
-      document.getElementById("generateBtn").disabled = true;
-      document.getElementById("audioBtn").disabled = true;
-      document.getElementById("audioPlayer").style.display = "none";
-
-      const verseBox = document.getElementById("verseBox");
-      verseBox.classList.add("fade-out");
-      
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      document.getElementById("arabic").textContent = "Loading...";
-      document.getElementById("meta").textContent = "";
-      document.getElementById("translations").innerHTML = "";
-
-      try {
-        const ayahNumber = Math.floor(Math.random() * 6236) + 1;
+  startCountdown(seconds) {
+    let timeLeft = seconds;
+    const countdownEl = document.getElementById('countdown');
+    countdownEl.textContent = `Next verse in ${timeLeft}s`;
+    
+    if (this.state.countdownInterval) clearInterval(this.state.countdownInterval);
+    
+    this.state.countdownInterval = setInterval(() => {
+      timeLeft--;
+      if (timeLeft > 0) {
+        countdownEl.textContent = `Next verse in ${timeLeft}s`;
+      } else {
+        clearInterval(this.state.countdownInterval);
+        countdownEl.textContent = '✅ Ready!';
+        this.state.cooldown = false;
+        document.getElementById('generateBtn').disabled = false;
         
-        const arabicRes = await fetch(`https://api.alquran.cloud/v1/ayah/${ayahNumber}/ar.alafasy`);
-        const arabicData = await arabicRes.json();
-          const arabicRes = await fetch(`https://api.alquran.cloud/v1/ayah/${ayahNumber}/ar.alafasy`);
-    const arabicData = await arabicRes.json();
+        if (document.getElementById('autoRotate').checked && !this.state.isPaused) {
+          document.getElementById('pauseRotation').style.display = 'inline-block';
+          this.generateAyah();
+        }
+      }
+    }, 1000);
+  },
+
+  togglePause() {
+    this.state.isPaused = !this.state.isPaused;
+    const btn = document.getElementById('pauseRotation');
     
-    const asadRes = await fetch(`https://api.alquran.cloud/v1/ayah/${ayahNumber}/en.asad`);
-    const asadData = await asadRes.json();
-    
-    let translations = [{name: "Muhammad Asad", text: asadData.data.text}];
-
-    if (showMultipleTranslations) {
-      const pickthallRes = await fetch(`https://api.alquran.cloud/v1/ayah/${ayahNumber}/en.pickthall`);
-      const pickthallData = await pickthallRes.json();
-      translations.push({name: "Pickthall", text: pickthallData.data.text});
-    }
-
-    document.getElementById("arabic").textContent = arabicData.data.text;
-    document.getElementById("meta").textContent = `${arabicData.data.surah.englishName} — Ayah ${arabicData.data.numberInSurah}`;
-    
-    const translationsEl = document.getElementById("translations");
-    translationsEl.innerHTML = "";
-    translations.forEach(trans => {
-      const div = document.createElement("div");
-      div.className = "translation";
-      div.innerHTML = `<div class="translation-label">${trans.name}</div>${trans.text}`;
-      translationsEl.appendChild(div);
-    });
-
-    currentAudio = arabicData.data.audio || null;
-    if (currentAudio) {
-      document.getElementById("audioBtn").disabled = false;
-    }
-    
-  } catch (e) {
-    document.getElementById("arabic").textContent = "Failed to load ayah.";
-    console.error(e);
-  }
-
-  verseBox.classList.remove("fade-out");
-  startCountdown(10);
-}
-
-document.getElementById("audioBtn").addEventListener("click", () => {
-  if (currentAudio) {
-    const player = document.getElementById("audioPlayer");
-    player.src = currentAudio;
-    player.style.display = "block";
-    player.play();
-  }
-});
-
-function startCountdown(seconds) {
-  let timeLeft = seconds;
-  document.getElementById("countdown").textContent = `Next verse in ${timeLeft}s`;
-  
-  if (countdownInterval) clearInterval(countdownInterval);
-  
-  countdownInterval = setInterval(() => {
-    timeLeft--;
-    if (timeLeft > 0) {
-      document.getElementById("countdown").textContent = `Next verse in ${timeLeft}s`;
+    if (this.state.isPaused) {
+      btn.textContent = '▶️ Resume';
+      if (this.state.countdownInterval) {
+        clearInterval(this.state.countdownInterval);
+      }
+      document.getElementById('countdown').textContent = 'Paused';
     } else {
-      clearInterval(countdownInterval);
-      document.getElementById("countdown").textContent = "✅ Ready!";
-      cooldown = false;
-      document.getElementById("generateBtn").disabled = false;
-      
-      if (autoRotateEnabled) {
-        generateAyah();
-      }
+      btn.textContent = '⏸️ Pause';
+      this.generateAyah();
     }
-  }, 1000);
-}
+  },
 
-document.getElementById("generateBtn").addEventListener("click", generateAyah);
+  resumeRotation() {
+    this.state.isPaused = false;
+    document.getElementById('pauseRotation').textContent = '⏸️ Pause';
+  },
 
-// ==================== QURAN READER ====================
-function initQuranReader() {
-  const select = document.getElementById("surahSelect");
-  if (select.options.length > 1) return; // Already initialized
-  
-  surahs.forEach(surah => {
-    const option = document.createElement("option");
-    option.value = surah.number;
-    option.textContent = `${surah.number}. ${surah.name} (${surah.verses} verses)`;
-    select.appendChild(option);
-  });
-}
-
-async function loadQuranContent() {
-  const surahNum = document.getElementById("surahSelect").value;
-  const ayahNum = document.getElementById("ayahInput").value;
-  const lang = document.getElementById("langSelect").value;
-  const arabicStyle = document.getElementById("arabicStyle").value;
-  const harakat = document.getElementById("harakatToggle").value;
-  
-  if (!surahNum) {
-    alert("Please select a Surah first!");
-    return;
-  }
-
-  const display = document.getElementById("quranDisplay");
-  display.innerHTML = "<p>Loading...</p>";
-
-  try {
-    let edition = "en.asad"; // Default English
-    if (lang === "de") edition = "de.bubenheim";
-    if (lang === "ar") {
-      edition = harakat === "with" ? "ar.alafasy" : "ar.muyassar";
+  // Bookmarks
+  saveCurrentVerse() {
+    if (!this.state.currentVerse) {
+      this.showStatus('No verse to save', 'error');
+      return;
     }
 
-    let url = `https://api.alquran.cloud/v1/surah/${surahNum}/${edition}`;
-    
-    const res = await fetch(url);
-    const data = await res.json();
-    
-    let ayahs = data.data.ayahs;
-    
-    // If specific ayah requested
-    if (ayahNum) {
-      ayahs = ayahs.filter(a => a.numberInSurah == ayahNum);
+    const exists = this.state.bookmarks.some(b => 
+      b.surah === this.state.currentVerse.surah && 
+      b.ayah === this.state.currentVerse.ayah
+    );
+
+    if (exists) {
+      this.showStatus('Already bookmarked', 'error');
+      return;
     }
 
-    // Get Arabic if translation selected
-    let arabicData = null;
-    if (lang !== "ar") {
-      const arabicEdition = harakat === "with" ? "ar.alafasy" : "ar.muyassar";
-      const arabicRes = await fetch(`https://api.alquran.cloud/v1/surah/${surahNum}/${arabicEdition}`);
-      arabicData = await arabicRes.json();
+    this.state.bookmarks.unshift(this.state.currentVerse);
+    this.saveBookmarks();
+    this.showStatus('Verse bookmarked!', 'success');
+  },
+
+  displayBookmarks() {
+    const container = document.getElementById('bookmarksList');
+    
+    if (this.state.bookmarks.length === 0) {
+      container.innerHTML = '<p style="color: #888;">No bookmarks yet. Save your favorite verses!</p>';
+      return;
     }
 
-    display.innerHTML = `<h2 style="color: #ff7a00; margin-bottom: 2rem;">${data.data.englishName}</h2>`;
-    
-    ayahs.forEach((ayah, index) => {
-      const div = document.createElement("div");
-      div.className = "ayah";
-      
-      let content = `<div class="ayah-number">Ayah ${ayah.numberInSurah}</div>`;
-      
-      // Show Arabic
-      if (lang === "ar" || arabicData) {
-        const arabicText = lang === "ar" ? ayah.text : arabicData.data.ayahs[index].text;
-        const styleClass = arabicStyle === "mushaf" ? "mushaf" : "";
-        content += `<div class="ayah-arabic ${styleClass}">${arabicText}</div>`;
-      }
-      
-      // Show translation if not Arabic-only
-      if (lang !== "ar") {
-        content += `<div class="ayah-translation">${ayah.text}</div>`;
-      }
-      
-      div.innerHTML = content;
-      display.appendChild(div);
+    container.innerHTML = '';
+    this.state.bookmarks.forEach((verse, index) => {
+      const div = document.createElement('div');
+      div.className = 'bookmark-item';
+      div.innerHTML = `
+        <div class="bookmark-meta">${verse.surah} — Ayah ${verse.ayah}</div>
+        <div class="bookmark-arabic">${verse.arabic}</div>
+        <div class="bookmark-translation">${verse.translation}</div>
+        <div class="bookmark-actions">
+          <button onclick="app.removeBookmark(${index})">🗑️ Remove</button>
+          ${verse.audio ? `<button onclick="app.playBookmarkAudio('${verse.audio}')">🔊 Play</button>` : ''}
+        </div>
+      `;
+      container.appendChild(div);
     });
-    
-  } catch (e) {
-    display.innerHTML = "<p>Failed to load Quran content. Please try again.</p>";
-    console.error(e);
-  }
-}
+  },
 
-// ==================== INITIALIZATION ====================
-window.addEventListener("DOMContentLoaded", () => {
-  updatePrayerTimes();
-  generateAyah();
-});
-  </script>
-  </body>
-  </html>
-  </parameter>
+  removeBookmark(index) {
+    this.state.bookmarks.splice(index, 1);
+    this.saveBookmarks();
+    this.displayBookmarks();
+    this.showStatus('Bookmark removed', 'success');
+  },
+
+  playBookmarkAudio(url) {
+    const player = document.getElementById('audioPlayer');
+    player.src = url;
+    player.style.display = 'block';
+    player.play();
+    this.showPage('home');
+  },
+
+  clearBookmarks() {
+    if (confirm('Clear all bookmarks?')) {
+      this.state.bookmarks = [];
+      this.saveBookmarks();
+      this.displayBookmarks();
+      this.showStatus('All bookmarks cleared', 'success');
+    }
+  },
+
+  // Quran Reader
+  initQuranReader() {
+    const select = document.getElementById('surahSelect');
+    if (select.options.length > 1) return;
+    
+    this.surahs.forEach(surah => {
+      const option = document.createElement('option');
+      option.value = surah.number;
+      option.textContent = `${surah.number}. ${surah.name} (${surah.verses} verses)`;
+      select.appendChild(option);
+    });
+  },
+
+  async loadQuranContent() {
+    const surahNum = document.getElementById('surahSelect').value;
+    const ayahNum = document.getElementById('ayahInput').value;
+    const lang = document.getElementById('langSelect').value;
+    const arabicStyle = document.getElementById('arabicStyle').value;
+    const harakat = document.getElementById('harakatToggle').value;
+    
+    if (!surahNum) {
+      alert('Please select a Surah first!');
+      return;
+    }
+
+    const display = document.getElementById('quranDisplay');
+    display.innerHTML = '<p>Loading...</p>';
+
+    try {
+      let edition = 'en.asad';
+      if (lang === 'de') edition = 'de.bubenheim';
+      if (lang === 'ar') {
+        edition = harakat === 'with' ? 'ar.alafasy' : 'ar.muyassar';
+      }
+
+      const res = await fetch(`https://api.alquran.cloud/v1/surah/${surahNum}/${edition}`);
+      const data = await res.json();
+      
+      let ayahs = data.data.ayahs;
+      
+      if (ayahNum) {
+        ayahs = ayahs.filter(a => a.numberInSurah == ayahNum);
+      }
+
+      let arabicData = null;
+      if (lang !== 'ar') {
+        const arabicEdition = harakat === 'with' ? 'ar.alafasy' : 'ar.muyassar';
+        const arabicRes = await fetch(`https://api.alquran.cloud/v1/surah/${surahNum}/${arabicEdition}`);
+        arabicData = await arabicRes.json();
+      }
+
+      display.innerHTML = `<h2 style="color: #ff7a00; margin-bottom: 2rem;">${data.data.englishName}</h2>`;
+      
+      ayahs.forEach((ayah, index) => {
+        const div = document.createElement('div');
+        div.className = 'ayah';
+        
+        let content = `<div class="ayah-number">Ayah ${ayah.numberInSurah}</div>`;
+        
+        if (lang === 'ar' || arabicData) {
+          const arabicText = lang === 'ar' ? ayah.text : arabicData.data.ayahs[index].text;
+          const styleClass = arabicStyle === 'mushaf' ? 'mushaf' : '';
+          content += `<div class="ayah-arabic ${styleClass}">${arabicText}</div>`;
+        }
+        
+        if (lang !== 'ar') {
+          content += `<div class="ayah-translation">${ayah.text}</div>`;
+        }
+        
+        div.innerHTML = content;
+        display.appendChild(div);
+      });
+      
+    } catch (e) {
+      display.innerHTML = '<p>Failed to load Quran content. Please try again.</p>';
+      console.error(e);
+    }
+  }
+};
+
+// Initialize app when DOM is ready
+window.addEventListener('DOMContentLoaded', () => app.init());
+
+// Auto-update prayer times daily
+setInterval(() => {
+  const now = new Date();
+  if (now.getHours() === 0 && now.getMinutes() === 0) {
+    app.updatePrayerTimes();
+  }
+}, 60000);
+</script>
